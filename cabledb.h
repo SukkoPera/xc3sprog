@@ -32,8 +32,10 @@ enum CABLES_TYPES
     CABLE_FX2,
     CABLE_XPC,
     CABLE_SYSFS_GPIO,
+#ifdef HAVE_WIRINGPI
     CABLE_MATRIX_CREATOR,
     CABLE_MATRIX_VOICE
+#endif
   };
 
 struct cable_t

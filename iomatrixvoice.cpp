@@ -1,3 +1,5 @@
+#ifdef HAVE_WIRINGPI
+
 #include "iomatrixvoice.h"
 
 IOMatrixVoice::IOMatrixVoice()
@@ -5,3 +7,4 @@ IOMatrixVoice::IOMatrixVoice()
 {
 }
 
+#endif

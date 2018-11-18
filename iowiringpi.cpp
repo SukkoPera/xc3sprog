@@ -1,3 +1,5 @@
+#ifdef HAVE_WIRINGPI
+
 #include "iowiringpi.h"
 
 #include <wiringPi.h>
@@ -87,4 +89,4 @@ bool IOWiringPi::txrx(bool tms, bool tdi)
   return digitalRead(TDOPin);  
 }
 
-
+#endif

@@ -3,10 +3,14 @@
 
 #include "iowiringpi.h"
 
+#ifdef HAVE_WIRINGPI
+
 class IOMatrixCreator : public IOWiringPi
 {
  public:
   IOMatrixCreator();
 };
+
+#endif
 
 #endif

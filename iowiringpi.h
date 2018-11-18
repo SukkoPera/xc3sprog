@@ -1,6 +1,8 @@
 #ifndef __IO_WIRING_PI__
 #define __IO_WIRING_PI__
 
+#ifdef HAVE_WIRINGPI
+
 #include "iobase.h"
 
 class IOWiringPi : public IOBase
@@ -21,5 +23,7 @@ class IOWiringPi : public IOBase
   int TDIPin;
   int TDOPin;
 };
+
+#endif
 
 #endif

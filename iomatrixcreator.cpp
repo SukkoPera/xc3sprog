@@ -1,3 +1,5 @@
+#ifdef HAVE_WIRINGPI
+
 #include "iomatrixcreator.h"
 
 IOMatrixCreator::IOMatrixCreator()
@@ -5,3 +7,4 @@ IOMatrixCreator::IOMatrixCreator()
 {
 }
 
+#endif

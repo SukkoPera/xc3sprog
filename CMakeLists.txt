@@ -32,7 +32,16 @@ else(LIBFTD2XX_FOUND)
   set(LIBFTD2XX_LIBRARIES "")
 endif(LIBFTD2XX_FOUND)
 
-if(EXISTS ${PROJECT_SOURCE_DIR}/.git) 
+find_library(HAVE_WIRINGPI NAMES wiringPi)
+if(HAVE_WIRINGPI)
+	set(LIBS ${LIBS} wiringPiDev wiringPi)
+	add_definitions(-DHAVE_WIRINGPI)
+else(HAVE_WIRINGPI)
+	message("wiringPi NOT found, support for IOMatrix Creator/Voice will NOT be available")
+endif(HAVE_WIRINGPI)
+
+
+if(EXISTS ${PROJECT_SOURCE_DIR}/.git)
   set(VERSION_STRING "${xc3sprog_VERSION_MAJOR}.${xc3sprog_VERSION_MINOR}-git")
 else(EXISTS ${PROJECT_SOURCE_DIR}/.git)
   FIND_PACKAGE(Subversion)
@@ -130,8 +139,8 @@ ADD_CUSTOM_COMMAND(OUTPUT cables.h
 
 INCLUDE_DIRECTORIES(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 
-add_library(xc3sproglib  STATIC sysfs.cpp ioftdi.cpp iofx2.cpp 
-                        devicedb.cpp jtag.cpp jedecfile.cpp bitfile.cpp 
+add_library(xc3sproglib  STATIC sysfs.cpp ioftdi.cpp iofx2.cpp
+                        devicedb.cpp jtag.cpp jedecfile.cpp bitfile.cpp
                         iomatrixcreator.cpp iomatrixvoice.cpp iowiringpi.cpp
 			iobase.cpp  progalgxc95x.cpp utilities.cpp
 			progalgxcf.cpp progalgxcfp.cpp progalgxc3s.cpp
@@ -140,15 +149,13 @@ add_library(xc3sproglib  STATIC sysfs.cpp ioftdi.cpp iofx2.cpp
                         cabledb.cpp pdioverjtag.cpp xmega_pdi_nvm.cpp
                         ${CONDITIONAL_FILES} devices.h cables.h)
 
-set(LIBS ${LIBS} wiringPiDev wiringPi)
-
 add_executable(xc2c_warp xc2c_warp.cpp)
 target_link_libraries(xc2c_warp xc3sproglib ${CONDITIONAL_LIBS})
 
 add_executable(detectchain detectchain.cpp cables.h devices.h)
 target_link_libraries(detectchain xc3sproglib ${LIBFTDI_LIBRARIES} ${LIBFTD2XX_LIBRARIES} ${CONDITIONAL_LIBS} ${LIBS} )
 
-add_executable(xc3sprog xc3sprog.cpp javr.cpp srecfile.cpp progalgavr.cpp 
+add_executable(xc3sprog xc3sprog.cpp javr.cpp srecfile.cpp progalgavr.cpp
 			devices.h)
 target_link_libraries(xc3sprog xc3sproglib ${LIBFTDI_LIBRARIES}  ${LIBFTD2XX_LIBRARIES} ${CONDITIONAL_LIBS}  ${LIBS} )
 
@@ -169,4 +176,4 @@ add_subdirectory(packages)
 include(CPack)
 
 
-SET_DIRECTORY_PROPERTIES(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "${GENERATED_FILES}") 
+SET_DIRECTORY_PROPERTIES(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "${GENERATED_FILES}")
